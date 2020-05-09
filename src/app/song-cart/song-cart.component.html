@@ -1,0 +1,50 @@
+<ul class="list-group">
+    <!-- Table Header -->
+    <li class="list-group-item mb-1 bg-dark text-white rounded sticky-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            Title
+            <i class="material-icons text-white ml-1">
+              sort
+            </i>
+          </div>
+          <div class="col-md-4">
+            Artist
+            <i class="material-icons text-white ml-1">
+              sort
+            </i>
+          </div>
+        </div>
+      </div>
+    </li>
+  
+    <!-- Song list -->
+    <ng-container *ngFor="let song of songList">
+    <li
+      *ngIf ="song.addedToCart"
+      class="list-group-item shadow-sm mb-1 bg-white rounded"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            {{ song.title }}
+          </div>
+          <div class="col-md-4">
+            {{ song.artist }}
+          </div>
+          <div class="col-md-4 d-flex justify-content-center">
+  
+            <button
+              class="btn btn-danger"
+              (click)="onDelete(song.id)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </li>
+</ng-container>
+  </ul>
+  
