@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { SongsService } from "../songs.service";
 import { Song } from "../song";
 import { Subscription } from "rxjs";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-song-cart",
@@ -10,9 +11,11 @@ import { Subscription } from "rxjs";
 })
 export class SongCartComponent implements OnInit, OnDestroy {
   public songList: Song[] = [];
-  public songSubscription: Subscription;
+  private songSubscription: Subscription;
+  public songListHeader: string = "Song Cart";
+  public showCart: boolean = false;
 
-  constructor(private _songService: SongsService) {}
+  constructor(private _songService: SongsService, private router: Router) {}
 
   ngOnInit(): void {
     this.songSubscription = this._songService
@@ -35,5 +38,9 @@ export class SongCartComponent implements OnInit, OnDestroy {
       if (elem.id === songID) elem.addedToCart = false;
     });
     this._songService.updateSongs(this.songList);
+  }
+
+  goToSongList() {
+    this.router.navigate(["/songs"]);
   }
 }

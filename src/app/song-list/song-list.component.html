@@ -1,50 +1,56 @@
-<ul class="list-group">
-  <!-- Table Header -->
-  <li class="list-group-item mb-1 bg-dark text-white rounded sticky-top">
-    <div class="container">
+<div class="sticky-top">
+  <app-header [headerText]="songListHeader" [showCart]="showCart"></app-header>
+  <ul class="list-group">
+    <!-- Table Header -->
+    <li class="list-group-item mb-1 bg-dark text-white rounded container">
       <div class="row">
         <div class="col-md-4">
           Title
-          <i class="material-icons text-white ml-1">
-            sort
+          <i class="material-icons text-muted ml-1">
+            <span [class.text-white]="titleSorted" (click)="sortTitle()">
+              sort
+            </span>
+            
           </i>
         </div>
         <div class="col-md-4">
           Artist
-          <i class="material-icons text-white ml-1">
-            sort
+          <i class="material-icons text-muted ml-1">
+            <span [class.text-white]="artistSorted" (click)="sortArtist()">
+              sort
+            </span>
           </i>
         </div>
       </div>
-    </div>
-  </li>
+    </li>
+  </ul>
+</div>
 
-  <!-- Song list -->
+<!-- Song list -->
+<ul class="list-group">
   <li
     *ngFor="let song of songList"
-    class="list-group-item shadow-sm mb-1 bg-white rounded"
+    class="list-group-item shadow-sm mb-1 bg-white rounded container"
   >
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          {{ song.title }}
-        </div>
-        <div class="col-md-4">
-          {{ song.artist }}
-        </div>
-        <div class="col-md-4 d-flex justify-content-center">
-          <button *ngIf="song.addedToCart" class="btn btn-secondary disabled">
-            Added to cart
-          </button>
+    <div class="row">
+      <div class="col-md-4">
+        {{ song.title }}
+      </div>
+      <div class="col-md-4">
+        {{ song.artist }}
+      </div>
+      <div class="col-md-4 d-flex justify-content-center">
+        <button *ngIf="song.addedToCart" class="btn btn-secondary disabled">
+          Added to cart
+        </button>
 
-          <button
-            *ngIf="!song.addedToCart"
-            class="btn btn-primary"
-            (click)="onClickAddToCart(song.id)"
-          >
-            Add to cart
-          </button>
-        </div>
+        <button
+          *ngIf="!song.addedToCart"
+          class="btn btn-primary"
+          (click)="onClickAddToCart(song.id)"
+        >
+          Add to cart
+        </button>
       </div>
     </div>
   </li>
