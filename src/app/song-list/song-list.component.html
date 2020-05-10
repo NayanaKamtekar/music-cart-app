@@ -10,7 +10,6 @@
             <span [class.text-white]="titleSorted" (click)="sortTitle()">
               sort
             </span>
-            
           </i>
         </div>
         <div class="col-md-4">
@@ -23,13 +22,36 @@
         </div>
       </div>
     </li>
+    <!-- Search boxes -->
+    <li class="list-group-item mb-1 bg-light text-white rounded container">
+      <div class="row">
+        <div class="col-md-4">
+          <input
+            type="text"
+            [(ngModel)]="titleSearchText"
+            class="form-control"
+            placeholder="Search"
+            (keyup)="filterSongList()"
+          />
+        </div>
+        <div class="col-md-4">
+          <input
+            type="text"
+            [(ngModel)]="artistSearchText"
+            class="form-control"
+            placeholder="Search"
+            (keyup)="filterSongList()"
+          />
+        </div>
+      </div>
+    </li>
   </ul>
 </div>
 
 <!-- Song list -->
 <ul class="list-group">
   <li
-    *ngFor="let song of songList"
+    *ngFor="let song of filteredList"
     class="list-group-item shadow-sm mb-1 bg-white rounded container"
   >
     <div class="row">

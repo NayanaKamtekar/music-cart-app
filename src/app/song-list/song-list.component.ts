@@ -10,6 +10,9 @@ import { Subscription } from "rxjs";
 })
 export class SongListComponent implements OnInit, OnDestroy {
   public songList: Song[] = [];
+  public filteredList: Song[] = [];
+  public titleSearchText: string = null;
+  public artistSearchText: string = null;
   private songSubscription: Subscription;
   public titleSorted: boolean = false;
   public artistSorted: boolean = false;
@@ -28,6 +31,7 @@ export class SongListComponent implements OnInit, OnDestroy {
     });
 
     this._songService.updateSongs(this.songList);
+    this.filteredList = this.songList;
     this.sortSongList();
   }
 
@@ -35,8 +39,26 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.songSubscription.unsubscribe();
   }
 
+  filterSongList(): void {
+    this.filteredList = this.songList;
+    if (this.titleSearchText !== "" && this.titleSearchText !== null)
+      this.filteredList = this.filteredList.filter((elem) =>
+        elem.title.toLowerCase().includes(this.titleSearchText.toLowerCase())
+      );
+    if (this.artistSearchText !== "" && this.artistSearchText !== null)
+      this.filteredList = this.filteredList.filter((elem) =>
+        elem.artist.toLowerCase().includes(this.artistSearchText.toLowerCase())
+      );
+    this.sortSongList();
+  }
+
+  artistFilterList(): void {
+    this.filteredList = this.songList;
+
+    this.sortSongList();
+  }
+
   onClickAddToCart(songID: number) {
-    console.log("I am herrrr");
     this.songList.forEach((elem) => {
       if (elem.id === songID) elem.addedToCart = true;
     });
@@ -45,7 +67,7 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   private sortSongList() {
     if (this.titleSorted) {
-      this.songList.sort((a, b) => {
+      this.filteredList.sort((a, b) => {
         if (a.title > b.title) {
           return 1;
         } else if (a.title < b.title) {
@@ -55,7 +77,7 @@ export class SongListComponent implements OnInit, OnDestroy {
         }
       });
     } else if (this.artistSorted) {
-      this.songList.sort((a, b) => {
+      this.filteredList.sort((a, b) => {
         if (a.artist > b.artist) {
           return 1;
         } else if (a.artist < b.artist) {
@@ -65,7 +87,7 @@ export class SongListComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.songList.sort((a, b) => {
+      this.filteredList.sort((a, b) => {
         if (a.id > b.id) {
           return 1;
         } else if (a.id < b.id) {
