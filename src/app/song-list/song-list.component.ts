@@ -32,7 +32,24 @@ export class SongListComponent implements OnInit, OnDestroy {
 
     this._songService.updateSongs(this.songList);
     this.filteredList = this.songList;
-    this.sortSongList();
+
+    this.titleSearchText = JSON.parse(
+      sessionStorage.getItem("titleSearchText")
+    );
+
+    this.artistSearchText = JSON.parse(
+      sessionStorage.getItem("artistSearchText")
+    );
+
+    this.titleSorted = JSON.parse(sessionStorage.getItem("titleSorted"));
+    if (this.titleSorted === null) this.titleSorted = false;
+
+    this.artistSorted = JSON.parse(sessionStorage.getItem("artistSorted"));
+    if (this.artistSorted === null) this.artistSorted = false;
+
+    if (this.titleSearchText !== null || this.artistSearchText !== null)
+      this.filterSongList();
+    else this.sortSongList();
   }
 
   ngOnDestroy(): void {
@@ -49,13 +66,17 @@ export class SongListComponent implements OnInit, OnDestroy {
       this.filteredList = this.filteredList.filter((elem) =>
         elem.artist.toLowerCase().includes(this.artistSearchText.toLowerCase())
       );
-    this.sortSongList();
-  }
-
-  artistFilterList(): void {
-    this.filteredList = this.songList;
 
     this.sortSongList();
+
+    sessionStorage.setItem(
+      "titleSearchText",
+      JSON.stringify(this.titleSearchText)
+    );
+    sessionStorage.setItem(
+      "artistSearchText",
+      JSON.stringify(this.artistSearchText)
+    );
   }
 
   onClickAddToCart(songID: number) {
@@ -104,6 +125,9 @@ export class SongListComponent implements OnInit, OnDestroy {
     if (this.titleSorted === true) this.titleSorted = false;
 
     this.sortSongList();
+
+    sessionStorage.setItem("artistSorted", JSON.stringify(this.artistSorted));
+    sessionStorage.setItem("titleSorted", JSON.stringify(this.titleSorted));
   }
 
   sortTitle() {
@@ -111,5 +135,8 @@ export class SongListComponent implements OnInit, OnDestroy {
     if (this.artistSorted === true) this.artistSorted = false;
 
     this.sortSongList();
+
+    sessionStorage.setItem("artistSorted", JSON.stringify(this.artistSorted));
+    sessionStorage.setItem("titleSorted", JSON.stringify(this.titleSorted));
   }
 }
