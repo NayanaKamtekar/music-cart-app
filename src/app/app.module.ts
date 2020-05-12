@@ -7,13 +7,15 @@ import { SongListComponent } from './song-list/song-list.component';
 import { SongsService } from './songs.service';
 import { SongCartComponent } from './song-cart/song-cart.component';
 import { HeaderComponent } from './header/header.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SongListComponent,
     SongCartComponent,
-    HeaderComponent
+    HeaderComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

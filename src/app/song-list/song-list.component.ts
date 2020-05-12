@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { SongsService } from "../songs.service";
 import { Song } from "../song";
+import { SongsService } from "../songs.service";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -11,18 +11,20 @@ import { Subscription } from "rxjs";
 export class SongListComponent implements OnInit, OnDestroy {
   public songList: Song[] = [];
   public filteredList: Song[] = [];
+  private songSubscription: Subscription;
+  public titleSorted: boolean;
+  public artistSorted: boolean;
   public titleSearchText: string = null;
   public artistSearchText: string = null;
-  private songSubscription: Subscription;
-  public titleSorted: boolean = false;
-  public artistSorted: boolean = false;
   public songListHeader: string = "Song List";
   public showCart: boolean = true;
+  public firstItemIndex: number;
+  public lastItemIndex: number;
 
-  constructor(private _songService: SongsService) {}
+  constructor(private _songsService: SongsService) {}
 
   ngOnInit(): void {
-    this.songSubscription = this._songService
+    this.songSubscription = this._songsService
       .getSongs()
       .subscribe((fetchedSongs) => (this.songList = fetchedSongs));
 
@@ -30,7 +32,8 @@ export class SongListComponent implements OnInit, OnDestroy {
       if (elem.addedToCart === undefined) elem["addedToCart"] = false;
     });
 
-    this._songService.updateSongs(this.songList);
+    this._songsService.updateSongs(this.songList);
+
     this.filteredList = this.songList;
 
     this.titleSearchText = JSON.parse(
@@ -58,10 +61,12 @@ export class SongListComponent implements OnInit, OnDestroy {
 
   filterSongList(): void {
     this.filteredList = this.songList;
+
     if (this.titleSearchText !== "" && this.titleSearchText !== null)
       this.filteredList = this.filteredList.filter((elem) =>
         elem.title.toLowerCase().includes(this.titleSearchText.toLowerCase())
       );
+
     if (this.artistSearchText !== "" && this.artistSearchText !== null)
       this.filteredList = this.filteredList.filter((elem) =>
         elem.artist.toLowerCase().includes(this.artistSearchText.toLowerCase())
@@ -73,6 +78,7 @@ export class SongListComponent implements OnInit, OnDestroy {
       "titleSearchText",
       JSON.stringify(this.titleSearchText)
     );
+
     sessionStorage.setItem(
       "artistSearchText",
       JSON.stringify(this.artistSearchText)
@@ -83,7 +89,8 @@ export class SongListComponent implements OnInit, OnDestroy {
     this.songList.forEach((elem) => {
       if (elem.id === songID) elem.addedToCart = true;
     });
-    this._songService.updateSongs(this.songList);
+
+    this._songsService.updateSongs(this.songList);
   }
 
   private sortSongList() {
@@ -138,5 +145,11 @@ export class SongListComponent implements OnInit, OnDestroy {
 
     sessionStorage.setItem("artistSorted", JSON.stringify(this.artistSorted));
     sessionStorage.setItem("titleSorted", JSON.stringify(this.titleSorted));
+  }
+
+  onPageChange(obj) {
+    // console.log(obj);
+    this.firstItemIndex = obj.firstItemIndex;
+    this.lastItemIndex = obj.lastItemIndex;
   }
 }

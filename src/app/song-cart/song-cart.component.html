@@ -1,22 +1,26 @@
 <div class="sticky-top">
-    <app-header [headerText]="songListHeader" [showCart]="showCart"></app-header>
+  <app-header [headerText]="songCartHeader" [showCart]="showCart"></app-header>
   <ul class="list-group">
     <!-- Table Header -->
-    <li class="list-group-item mb-1 bg-dark text-white rounded container">
+    <li
+      *ngIf="isItemInCart()"
+      class="list-group-item mb-1 bg-dark text-white rounded container"
+    >
       <div class="row">
         <div class="col-md-4">
           Title
-          <i class="material-icons text-white ml-1">
-            sort
-          </i>
         </div>
         <div class="col-md-4">
           Artist
-          <i class="material-icons text-white ml-1">
-            sort
-          </i>
         </div>
       </div>
+    </li>
+    <!-- When there are no items in cart -->
+    <li
+      *ngIf="!isItemInCart()"
+      class="list-group-item shadow-sm mt-1 bg-white rounded container"
+    >
+      No songs in the cart!
     </li>
   </ul>
 </div>
@@ -43,4 +47,4 @@
     </li>
   </ng-container>
 </ul>
-<button (click)="goToSongList()" class="btn btn-primary">Go Back</button>
+<button (click)="goToSongList()" class="btn btn-primary mt-3 float-right">Go Back</button>

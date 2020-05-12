@@ -12,7 +12,7 @@ import { Router } from "@angular/router";
 export class SongCartComponent implements OnInit, OnDestroy {
   public songList: Song[] = [];
   private songSubscription: Subscription;
-  public songListHeader: string = "Song Cart";
+  public songCartHeader: string = "Song Cart";
   public showCart: boolean = false;
 
   constructor(private _songService: SongsService, private router: Router) {}
@@ -40,7 +40,12 @@ export class SongCartComponent implements OnInit, OnDestroy {
     this._songService.updateSongs(this.songList);
   }
 
+  isItemInCart() {
+    return this.songList.reduce((acc, curr) => (acc = acc || curr.addedToCart), false)
+  }
+
   goToSongList() {
     this.router.navigate(["/songs"]);
   }
+
 }

@@ -2,33 +2,34 @@
   <app-header [headerText]="songListHeader" [showCart]="showCart"></app-header>
   <ul class="list-group">
     <!-- Table Header -->
-    <li class="list-group-item mb-1 bg-dark text-white rounded container">
+    <li class="list-group-item bg-dark text-white rounded container">
       <div class="row">
         <div class="col-md-4">
           Title
-          <i class="material-icons text-muted ml-1">
-            <span [class.text-white]="titleSorted" (click)="sortTitle()">
-              sort
-            </span>
+          <i class="material-icons ml-1 text-muted">
+            <span [class.text-white]="titleSorted" (click)="sortTitle()"
+              >sort</span
+            >
           </i>
         </div>
         <div class="col-md-4">
           Artist
-          <i class="material-icons text-muted ml-1">
-            <span [class.text-white]="artistSorted" (click)="sortArtist()">
-              sort
-            </span>
+          <i class="material-icons ml-1 text-muted">
+            <span [class.text-white]="artistSorted" (click)="sortArtist()"
+              >sort</span
+            >
           </i>
         </div>
       </div>
     </li>
+
     <!-- Search boxes -->
     <li class="list-group-item mb-1 bg-light text-white rounded container">
       <div class="row">
         <div class="col-md-4">
           <input
             type="text"
-            [(ngModel)]="titleSearchText"
+            [(ngModel)] = "titleSearchText"
             class="form-control"
             placeholder="Search"
             (keyup)="filterSongList()"
@@ -37,7 +38,7 @@
         <div class="col-md-4">
           <input
             type="text"
-            [(ngModel)]="artistSearchText"
+            [(ngModel)] = "artistSearchText"
             class="form-control"
             placeholder="Search"
             (keyup)="filterSongList()"
@@ -47,11 +48,10 @@
     </li>
   </ul>
 </div>
-
 <!-- Song list -->
 <ul class="list-group">
   <li
-    *ngFor="let song of filteredList"
+    *ngFor="let song of filteredList | slice:firstItemIndex:lastItemIndex"
     class="list-group-item shadow-sm mb-1 bg-white rounded container"
   >
     <div class="row">
@@ -63,7 +63,7 @@
       </div>
       <div class="col-md-4 d-flex justify-content-center">
         <button *ngIf="song.addedToCart" class="btn btn-secondary disabled">
-          Added to cart
+          Added to Cart
         </button>
 
         <button
@@ -71,9 +71,10 @@
           class="btn btn-primary"
           (click)="onClickAddToCart(song.id)"
         >
-          Add to cart
+          Add to Cart
         </button>
       </div>
     </div>
   </li>
 </ul>
+<app-pagination *ngIf="filteredList.length > 0" [numberOfItems]="filteredList.length" (pageChanged)="onPageChange($event)"></app-pagination>
